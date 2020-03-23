@@ -34,4 +34,4 @@ Note:
 
 Example of an archive name:
 
-     `hostname-20200323`
+     hostname-20200323
