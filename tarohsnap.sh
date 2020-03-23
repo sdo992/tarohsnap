@@ -4,12 +4,12 @@
 
 # Variables
 tarsnap=/usr/local/bin/tarsnap
-holdLength=3
+holdLength=3 # Number of days
 logLocation=/home/$USER/.tarsnap/logs
 tlog=${logLocation}/tlog
 backToday=$(uname -n)-$(date +%Y%m%d)
 backOld=`$tarsnap --list-archives | grep ${backToday} | sort -r | sed 1,${holdLength}d | sort | xargs -n 1`
-backTargets="/home/$USER/Documents/AOSDevSec /home/$USER/.rednotebook"
+backTargets="/path/to/backup1 /path/to/backup2"
 
 # Check if directory exists, if not, create it and the log file
 if [ ! -e ${logLocation} ]; then
@@ -26,7 +26,6 @@ if ${tarsnap} --list-archives | sort | grep ${backToday} > /dev/null; then
     echo "BACKUP FOR $backToday ALREADY COMPLETED" >> ${tlog}
 else
     echo "BACKUP FOR $backToday INITIATED" >> ${tlog}
-    #/usr/local/bin/tarsnap -cf $backToday /home/trekker/Documents/AOSDevSec >> ${tlog} 2>&1
     ${tarsnap} -cf ${backToday} $backTargets >> $tlog 2>&1
     echo "BACKUP COMPLETE for $backToday" >> ${tlog}
 fi
@@ -36,7 +35,6 @@ echo "ATTEMPTING TO DELETE BACKUPS OLDER THAN $holdLength DAYS" >> ${tlog}
 if [ -n "$backOld" ]; then 
     echo "Deleting the following backups: " >> ${tlog}
     echo "${backOld}" >> ${tlog}
-    #/usr/local/bin/tarsnap --list archives | grep $backToday | sort -r | sed 1,${holdLength}d | sort | xargs -n 1 tarsnap -df >> ${tlog} 2>&1 
     $tarsnap --list-archives | grep $backToday | sort -r | sed 1,${holdLength}d | sort | xargs -n 1 $tarsnap -df >> ${tlog} 2>&1
 else
     echo "No backup files found to delete" >> ${tlog}
