@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 tarohsnap
 ===============
 
@@ -35,3 +36,7 @@ Note:
 Example of an archive name:
 
      `hostname-20200323`
+=======
+# tarohsnap
+Shell script for tarsnap cron job to backup files/directories daily
+>>>>>>> 3288a5b2b27ee04ae2f2ff7ac00b22b89d1a783d
