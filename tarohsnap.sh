@@ -28,7 +28,7 @@ if ${oh_snap} --list-archives | sort | grep ${back_today} > /dev/null; then
     printf "%s\n" "BACKUP FOR $back_today ALREADY COMPLETED" >> ${tlog}
 else
     printf "%s\n" "BACKUP FOR $back_today INITIATED" >> ${tlog}
-    ${oh_snap} -cf ${back_today} $back_targets >> $tlog 2>&1
+    ${oh_snap} -cf ${back_today} $back_targets >> ${tlog}
     printf "%s\n" "BACKUP COMPLETE for $back_today" >> ${tlog}
 fi
 
