@@ -9,7 +9,6 @@ hold_days=3
 log_loc=/home/$USER/.tarsnap/logs
 tlog=${log_loc}/tlog
 back_today=$(uname -n)-$(date +%Y%m%d)
-back_old=`$oh_snap --list-archives | sort -r | sed 1,${hold_days}d | sort | xargs -n 1`
 tmpfile=$(mktemp)
 back_targets="/path/to/backup1 /path/to/backup2"
 
