@@ -1,50 +1,61 @@
 #!/bin/bash
 
-# dcron daily bash Script
+# cronjob run daily
 
 # Variables
-ohsnap=/usr/local/bin/tarsnap
-holdLength=3 # Number of days
-logLocation=/home/$USER/.tarsnap/logs
-tlog=${logLocation}/tlog
-backToday=$(uname -n)-$(date +%Y%m%d)
-backOld=`$ohsnap --list-archives | sort -r | sed 1,${holdLength}d | sort | xargs -n 1`
-backTargets="/path/to/backup1 /path/to/backup2"
+oh_snap=/usr/local/bin/tarsnap
+snap_date=$(date +%Y%m%d)
+hold_days=3
+log_loc=/home/$USER/.tarsnap/logs
+tlog=${log_loc}/tlog
+back_today=$(uname -n)-$(date +%Y%m%d)
+back_old=`$oh_snap --list-archives | sort -r | sed 1,${hold_days}d | sort | xargs -n 1`
+tmpfile=$(mktemp)
+back_targets="/path/to/backup1 /path/to/backup2"
 
 # Check if directory exists, if not, create it and the log file
-if [ ! -e ${logLocation} ]; then
-    mkdir $logLocation
+if [ ! -e ${log_loc} ]; then
+    mkdir $log_loc
     if [ ! -e ${tlog} ]; then
-        echo "TARSNAP INTIAL DIRECTORY AND FILE CREATION $(date +%Y%m%d)" > ${tlog}
-        echo >> ${tlog}
+        printf "%s\n" "TARSNAP INTIAL DIRECTORY AND FILE CREATION $snap_date" > ${tlog}
+        printf "%s\n" >> ${tlog}
     fi
 fi
 
 # Backup if/else statement
-if ${ohsnap} --list-archives | sort | grep ${backToday} > /dev/null; then
-    echo "**********" >> ${tlog}
-    echo "BACKUP FOR $backToday ALREADY COMPLETED" >> ${tlog}
+if ${oh_snap} --list-archives | sort | grep ${back_today} > /dev/null; then
+    printf "%s\n" "**********" >> ${tlog}
+    printf "%s\n" "BACKUP FOR $back_today ALREADY COMPLETED" >> ${tlog}
 else
-    echo "BACKUP FOR $backToday INITIATED" >> ${tlog}
-    ${ohsnap} -cf ${backToday} $backTargets >> $tlog 2>&1
-    echo "BACKUP COMPLETE for $backToday" >> ${tlog}
+    printf "%s\n" "BACKUP FOR $back_today INITIATED" >> ${tlog}
+    ${oh_snap} -cf ${back_today} $back_targets >> $tlog 2>&1
+    printf "%s\n" "BACKUP COMPLETE for $back_today" >> ${tlog}
 fi
 
-# Control the size of the backups
-echo "ATTEMPTING TO DELETE BACKUPS OLDER THAN $holdLength DAYS" >> ${tlog}
-if [ -n "$backOld" ]; then 
-    echo "Deleting the following backups: " >> ${tlog}
-    echo "${backOld}" >> ${tlog}
-    $ohsnap --list-archives | sort -r | sed 1,${holdLength}d | sort | xargs -n 1 $ohsnap -df >> ${tlog} 2>&1
-    echo "DELETE SUCCESS - END OF DELETION SECTION" >> ${tlog}
+# Delete $hold_days number of days of archives
+${oh_snap} --list-archives | sort > "$tmpfile"
+mapfile -t archives < "$tmpfile"
+remove=$(( ${#archives[@]} - keep ))
+targets=( $(head -n "$remove" "$tmpfile" | sort -r) )
+
+if (( ${#targets[@]} > $hold_days )); then
+    printf "%s\n" "ARCHIVES TO DELETE:" >> ${tlog}
+    printf "%s\n" "${targets[@]:$hold_days}" >> ${tlog}
+
+    for archives in "${targets[@]:$hold_days}"; do
+        ${oh_snap} -d --no-print-stats -f "$archives" > /dev/null
+    done && printf "%s\n" "ARCHIVES SUCCESSFULLY DELETED" >> ${tlog}
+
+    printf "\n%s\n" "REMAINING ARCHIVES: " >> ${tlog}
+    ${oh_snap} --list-archives | sort >> ${tlog}
 else
-    echo "No backup files found to delete" >> ${tlog}
-    echo "END OF DELETION SECTION" >> ${tlog}
+    printf "%s\n" "NO ARCHIVES TO DELETE" >> ${tlog}
 fi
 
 # End of script
-echo "BACKUP SCRIPT COMPLETE FOR $backToday" >> ${tlog}
-echo "**********" >> ${tlog}
-echo >> ${tlog}
+printf "%s\n" "BACKUP SCRIPT COMPLETE FOR $back_today" >> ${tlog}
+printf "%s\n" "**********" >> ${tlog}
+printf "%s\n" >> ${tlog}
 
+rm "$tmpfile"
 # EOF
