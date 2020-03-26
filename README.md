@@ -35,3 +35,7 @@ Note:
 Example of an archive name:
 
      hostname-20200323
+
+Warning
+--------------------
+This script is provided as-is; I don't warranty or guarantee that it will or will not delete your archives; modify it for your system(s)
