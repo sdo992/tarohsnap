@@ -61,7 +61,7 @@ if ${oh_snap} --list-archives | sort | grep ${back_today} > /dev/null; then
     printf "%s\n" "    BACKUP FOR $back_today ALREADY COMPLETED" >> ${logfile}
     # printf "%s\n" "    EXITING!" >> ${logfile}
     # printf "%s\n" "**********" >> ${logfile}
-    # exit 0                    # Stop here and exit gravefully
+    # exit 0                    # Stop here and exit gracefully
 else
     printf "%s\n" "    BACKUP FOR $back_today INITIATED..." >> ${logfile}
     ${oh_snap} -cf ${back_today} $back_targets >> ${logfile}
