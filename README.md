@@ -7,6 +7,9 @@ Description & Roadmap
 `tarohsnap` is a shell script cron job that creates backups with tarsnap.
 The name is a play on the words: `Tar? Oh snap!` and, of course `tarnsap`
 
+I use a non-systemd system; changes may have to be made if you use a
+systemd-based distro
+
 My current design goals are:
 
 - Backup specific files/directories using variables within the script
@@ -22,8 +25,10 @@ Future goals:
 - More shell agnostic design
 - Incorporate conf file, `/etc/tarohsnap.conf` to house user-defined variables
 - Error handling
-- System logfile location rather than local
-- Either local system notification on error/completion or email notification
+- System logfile location rather than local; tentatively, I am planning on `/var/log/tarohsnap.log`
+  - To handle privilege escalation, I may have to break up the script into multiple files
+  - Because of this, I may have to create an install procedure; not sure yet if I want to visit this with a shell script
+- Either local system notification on error/completion or email notification ** IN PROGRESS **
 
 Usage
 --------------------
