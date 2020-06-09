@@ -102,7 +102,7 @@ if cat $tmp_file | grep ${back_today} > /dev/null; then
 else
     printf "%s\n" "Initiating DAILY backup..." >> ${logfile}
     ${oh_snap} -cf ${back_today} $back_targets > /dev/null
-    printf "%s\n" "    Daily backup for $(date +%A), $(date +%B) $(date +%d), $(date +%Y) completed"
+    printf "%s\n" "    Daily backup for $(date +%A), $(date +%B) $(date +%d), $(date +%Y) completed" >> ${logfile}
 fi
 printf "%s\n" >> ${logfile}
 
