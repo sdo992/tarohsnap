@@ -5,7 +5,7 @@ Description & Roadmap
 --------------------
 
 `tarohsnap` is a shell script cron job that creates backups with tarsnap.
-The name is a play on the words: `Tar? Oh snap!` and, of course `tarnsap`
+The name is a play on the words: `Tar? Oh snap!` and, of course `tarsnap`
 
 I use a non-systemd system; changes may have to be made if you use a
 systemd-based distro
