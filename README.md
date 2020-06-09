@@ -18,7 +18,7 @@ My current design goals are:
 - One backup per day for $hold_days, 12 monthly backups and 1 annual backup
 - Deletes archived files in a given length of time
 - Keeps a log file of all activities performed
-- Started error handling 04 May 2020, specifically exiting if tarsnap does not exist on the system and logging it to the system's log
+- Error handling 04 May 2020, specifically exiting if tarsnap does not exist on the system and logging it to the system's log
 
 Future goals:
 

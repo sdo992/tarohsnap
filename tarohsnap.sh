@@ -44,6 +44,7 @@ line_size_max=1000             # Arbitrary max number of lines in log file
 line_size_min=50               # Arbitrary min number of lines in log file
 back_targets="/path/to/backup/one /path/to/backup/two"
 
+# Error checking
 # Check for and fail if `root` user detected
 if [ $(id -u) = 0 ]; then
     logger -p user.info "ERROR: root DETECTED! tarohsnap IS NOT DESIGNED TO BE RUN AS root USER! EXITING!"
@@ -64,7 +65,8 @@ fi
 ${oh_snap} --list-archives | sort > "$tmp_file"
 mapfile -t yarchives < "$tmp_file"
 
-# Backup routine: Grandparent (annual) - Parent (monthly) - Child (daily) 
+# Backup routine 
+# Grandparent (annual) - Parent (monthly) - Child (daily)
 printf "%s\n" "**********" >> ${logfile}
 
 # Annual backup
