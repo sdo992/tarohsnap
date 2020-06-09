@@ -13,9 +13,9 @@ systemd-based distro
 My current design goals are:
 
 - Backup specific files/directories using variables within the script
-- Daily backup schedule
-- focus on bash functionality first, then more portable shell code later
-- One backup per day
+- Grandparent/Parent/Child backup schedule
+- Focus on bash functionality first, then more portable shell code later
+- One backup per day for $hold_days, 12 monthly backups and 1 annual backup
 - Deletes archived files in a given length of time
 - Keeps a log file of all activities performed
 - Started error handling 04 May 2020, specifically exiting if tarsnap does not exist on the system and logging it to the system's log
@@ -39,9 +39,11 @@ Usage
 
 Note:
 --------------------
-Example of an archive name:
+Example of archive names:
 
-     $hostname-20200323
+     $hostname-2020.03.23-daily
+     $hostname-2020.03-March-monthly
+     $hostname-2020-annual
 
 This script assumes that you have tarsnap installed, configured and running; it further assumes that a regular, unprivileged user will invoke it through `crontab -e`
 
