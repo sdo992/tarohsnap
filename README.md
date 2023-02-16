@@ -1,6 +1,12 @@
 tarohsnap
 ===============
 
+<p align="left">
+  <a aria-label="license" href="https://github.com/primer/css/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/primer/css.svg" alt="">
+  </a>
+</p>
+
 Description & Roadmap
 --------------------
 
