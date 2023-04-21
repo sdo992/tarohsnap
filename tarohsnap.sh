@@ -2,7 +2,7 @@
 
 ##############################################################################################
 # cronjob to automate tarsnap backups                                                        #
-# tar! Oh, snap!, stylized as `tarohsnap` is released with a GPL V3 license                  #
+# tar! Oh, snap!, stylized as `tarohsnap` is released with the MIT license                   #
 # see: https://www.gnu.org/licenses/gpl-3.0.en.html                                          #
 # for any questions                                                                          #
 #                                                                                            #
